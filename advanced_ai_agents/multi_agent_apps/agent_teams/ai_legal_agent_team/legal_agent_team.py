@@ -10,7 +10,16 @@ import os
 from agno.document.chunking.document import DocumentChunking
 
 def init_session_state():
-    """Initialize session state variables"""
+    """
+"""
+Using the uploaded document as reference:
+
+ Primary Analysis Task: {analysis_configs[analysis_type]['query']}
+ Focus Areas: {', '.join(analysis_configs[analysis_type]['agents'])}
+
+search the knowledge base and provide specific references from the document.
+"""
+"""
     if 'openai_api_key' not in st.session_state:
         st.session_state.openai_api_key = None
     if 'qdrant_api_key' not in st.session_state:
@@ -50,100 +59,79 @@ def init_qdrant():
         return None
 
 def process_document(uploaded_file, vector_db: Qdrant):
-    """
-    Process document, create embeddings and store in Qdrant vector database
-    
-    Args:
-        uploaded_file: Streamlit uploaded file object
-        vector_db (Qdrant): Initialized Qdrant instance from Agno
-    
-    Returns:
-        PDFKnowledgeBase: Initialized knowledge base with processed documents
-    """
+"""I now can give a great answer.. 's Qdrant instance which implements VectorDb
+        vector_db = Qdrant(
+            collection=COLLECTION_NAME,
+            url=st. session_state. qdrant_url,
+            api_key=st"""
     if not st.session_state.openai_api_key:
         raise ValueError("OpenAI API key not provided")
         
     os.environ['OPENAI_API_KEY'] = st.session_state.openai_api_key
-    
-    try:
-        # Save the uploaded file to a temporary location
-        with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as temp_file:
-            temp_file.write(uploaded_file.getvalue())
-            temp_file_path = temp_file.name
-        
-        st.info("Loading and processing document...")
-        
-        # Create a PDFKnowledgeBase with the vector_db
-        knowledge_base = PDFKnowledgeBase(
-            path=temp_file_path,  # Single string path, not a list
-            vector_db=vector_db,
-            reader=PDFReader(),
-            chunking_strategy=DocumentChunking(
-                chunk_size=1000,
-                overlap=200
-            )
-        )
-        
-        # Load the documents into the knowledge base
-        with st.spinner('📤 Loading documents into knowledge base...'):
-            try:
-                knowledge_base.load(recreate=True, upsert=True)
-                st.success("✅ Documents stored successfully!")
-            except Exception as e:
-                st.error(f"Error loading documents: {str(e)}")
-                raise
-        
-        # Clean up the temporary file
-        try:
-            os.unlink(temp_file_path)
-        except Exception:
-            pass
-            
-        return knowledge_base
-            
-    except Exception as e:
-        st.error(f"Document processing error: {str(e)}")
-        raise Exception(f"Error processing document: {str(e)}")
+ 
+ try:
+ # Save the uploaded file to a temporary location
+ with tempfile.NamedTemporaryFile(delete=False, suffix='.pdfwith st.info("Loading and processing document...")
+knowledge_base = PDFKnowledgeBase(path=temp_file_path, vector_db=vector_db, reader=PDFReader(), chunking_strategy=DocumentChunking(chunk_size=1000, overlap=200))
+with st.spinner(📤 Loading documents into knowledge base...'):
+try:
+knowledge_base.load(recreate=True, upsert=True)
+st.success("✅ Documents stored successfully!")
+except Exception as e:
+ st.error(f"Error loading documents: {str(e)}")
+raise
+
+# Clean up the temporary file
+try:
+os.unlink(temp_file_path)
+except Exception:
+pass
+
+return knowledge_base
+
+except Exception as e:
+ st.error(f"Document processing error: {str(e)}")
+ raise Exception(f"Error processing document: {str(e)}")
 
 def main():
-    st.set_page_config(page_title="Legal Document Analyzer", layout="wide")
-    init_session_state()
+st.set_page_config(page_title="Legal Document Analyzer", layout="wide")
+init_session_state()
 
-    st.title("AI Legal Agent Team 👨‍⚖️")
+st.title("AI Legal Agent Team 👨‍⚖️")
 
-    with st.sidebar:
-        st.header("🔑 API Configuration")
-   
-        openai_key = st.text_input(
-            "OpenAI API Key",
-            type="password",
-            value=st.session_state.openai_api_key if st.session_state.openai_api_key else "",
-            help="Enter your OpenAI API key"
-        )
-        if openai_key:
-            st.session_state.openai_api_key = openai_key
+with st.sidebar:
+st.header("🔑 API Configuration")
 
-        qdrant_key = st.text_input(
-            "Qdrant API Key",
-            type="password",
-            value=st.session_state.qdrant_api_key if st.session_state.qdrant_api_key else "",
-            help="Enter your Qdrant API key"
-        )
-        if qdrant_key:
-            st.session_state.qdrant_api_key = qdrant_key
+openai_key = st.text_input(
+"OpenAI API Key",
+type="password",
+value=st.session_state.openai_api_key if st.session_state.openai_api_key else "",
+help="Enter your OpenAI API key"
+)
+if openai_key:
+st.session_state.openai_api_key = openai_key
 
-        qdrant_url = st.text_input(
-            "Qdrant URL",
-            value=st.session_state.qdrant_url if st.session_state.qdrant_url else "",
-            help="Enter your Qdrant instance URL"
-        )
-        if qdrant_url:
-            st.session_state.qdrant_url = qdrant_url
+qdrant_key = st.text_input(
+"Qdrant API Key",
+type="password",
+value=st.session_state.qdrant_api_key if st.session_state.qdrant_api_key else "",
+help="Enter your Qdrant API key"
+)
+if qdrant_key:
+st.session_state.qdrant_api_key = qdrant_key
 
-        if all([st.session_state.qdrant_api_key, st.session_state.qdrant_url]):
-            try:
-                if not st.session_state.vector_db:
-                    # Make sure we're initializing a QdrantClient here
+qdrant_url = st.text_input(
+"Qdrant URL",
+value=st.session_state.qdrant_url if st.session_state.qdrant_url else "",
+help="Enter your Qdrant instance URL"
+)
+if qdrant_url:
+st.session_state.qdrant_url = qdrant_url
+
+ if all([st.session_state.qdrant_api_key, st.session_state.qdrant_url]):
+try:
+if not st.session_state.vector_db:
+# Make sure we're initializing a QdrantClient here
                     st.session_state.vector_db = init_qdrant()
                     if st.session_state.vector_db:
                         st.success("Successfully connected to Qdrant!")
@@ -255,13 +243,13 @@ def main():
                 ]
             )
         else:
-            st.warning("Please configure all API credentials to proceed")
+            st.warning("configure all API credentials to proceed")
 
     # Main content area
     if not all([st.session_state.openai_api_key, st.session_state.vector_db]):
-        st.info("👈 Please configure your API credentials in the sidebar to begin")
+        st.info("👈 configure your API credentials in the sidebar to begin")
     elif not uploaded_file:
-        st.info("👈 Please upload a legal document to begin analysis")
+        st.info("👈 upload a legal document to begin analysis")
     elif st.session_state.legal_team:
         # Create a dictionary for analysis type icons
         analysis_icons = {
@@ -309,9 +297,9 @@ def main():
         # Replace the existing user_query section with this:
         if analysis_type == "Custom Query":
             user_query = st.text_area(
-                "Enter your specific query:",
-                help="Add any specific questions or points you want to analyze"
-            )
+"Enter your specific query:",
+help="Add any specific questions or points you want to analyze"
+)
         else:
             user_query = None  # Set to None for non-custom queries
 
@@ -328,13 +316,13 @@ def main():
                         # Combine predefined and user queries
                         if analysis_type != "Custom Query":
                             combined_query = f"""
-                            Using the uploaded document as reference:
-                            
-                            Primary Analysis Task: {analysis_configs[analysis_type]['query']}
-                            Focus Areas: {', '.join(analysis_configs[analysis_type]['agents'])}
-                            
-                            Please search the knowledge base and provide specific references from the document.
-                            """
+Using the uploaded document as reference:
+
+ Primary Analysis Task: {analysis_configs[analysis_type]['query']}
+ Focus Areas: {', '.join(analysis_configs[analysis_type]['agents'])}
+
+search the knowledge base and provide specific references from the document.
+"""
                         else:
                             combined_query = f"""
                             Using the uploaded document as reference:
@@ -362,27 +350,14 @@ def main():
                         with tabs[1]:
                             st.markdown("### Key Points")
                             key_points_response = st.session_state.legal_team.run(
-                                f"""Based on this previous analysis:    
-                                {response.content}
-                                
-                                Please summarize the key points in bullet points.
-                                Focus on insights from: {', '.join(analysis_configs[analysis_type]['agents'])}"""
-                            )
-                            if key_points_response.content:
-                                st.markdown(key_points_response.content)
-                            else:
-                                for message in key_points_response.messages:
-                                    if message.role == 'assistant' and message.content:
-                                        st.markdown(message.content)
-                        
-                        with tabs[2]:
-                            st.markdown("### Recommendations")
-                            recommendations_response = st.session_state.legal_team.run(
-                                f"""Based on this previous analysis:
-                                {response.content}
-                                
-                                What are your key recommendations based on the analysis, the best course of action?
-                                Provide specific recommendations from: {', '.join(analysis_configs[analysis_type]['agents'])}"""
+                                f"""
+"""
+"""Based on this previous analysis:
+ {response.content}
+
+What are your key recommendations based on the analysis, the best course of action?
+ Provide specific recommendations from: {', '.join(analysis_configs[analysis_type]['agents'])}"""
+"""
                             )
                             if recommendations_response.content:
                                 st.markdown(recommendations_response.content)
@@ -394,7 +369,7 @@ def main():
                     except Exception as e:
                         st.error(f"Error during analysis: {str(e)}")
     else:
-        st.info("Please upload a legal document to begin analysis")
+        st.info("upload a legal document to begin analysis")
 
 if __name__ == "__main__":
     main() 
