@@ -10,7 +10,16 @@ import os
 from agno.document.chunking.document import DocumentChunking
 
 def init_session_state():
-    """Initialize session state variables"""
+    """
+"""
+Using the uploaded document as reference:
+
+ Primary Analysis Task: {analysis_configs[analysis_type]['query']}
+ Focus Areas: {', '.join(analysis_configs[analysis_type]['agents'])}
+
+search the knowledge base and provide specific references from the document.
+"""
+"""
     if 'openai_api_key' not in st.session_state:
         st.session_state.openai_api_key = None
     if 'qdrant_api_key' not in st.session_state:
@@ -328,13 +337,13 @@ def main():
                         # Combine predefined and user queries
                         if analysis_type != "Custom Query":
                             combined_query = f"""
-                            Using the uploaded document as reference:
-                            
-                            Primary Analysis Task: {analysis_configs[analysis_type]['query']}
-                            Focus Areas: {', '.join(analysis_configs[analysis_type]['agents'])}
-                            
-                            Please search the knowledge base and provide specific references from the document.
-                            """
+Using the uploaded document as reference:
+
+ Primary Analysis Task: {analysis_configs[analysis_type]['query']}
+ Focus Areas: {', '.join(analysis_configs[analysis_type]['agents'])}
+
+search the knowledge base and provide specific references from the document.
+"""
                         else:
                             combined_query = f"""
                             Using the uploaded document as reference:
@@ -362,27 +371,14 @@ def main():
                         with tabs[1]:
                             st.markdown("### Key Points")
                             key_points_response = st.session_state.legal_team.run(
-                                f"""Based on this previous analysis:    
-                                {response.content}
-                                
-                                Please summarize the key points in bullet points.
-                                Focus on insights from: {', '.join(analysis_configs[analysis_type]['agents'])}"""
-                            )
-                            if key_points_response.content:
-                                st.markdown(key_points_response.content)
-                            else:
-                                for message in key_points_response.messages:
-                                    if message.role == 'assistant' and message.content:
-                                        st.markdown(message.content)
-                        
-                        with tabs[2]:
-                            st.markdown("### Recommendations")
-                            recommendations_response = st.session_state.legal_team.run(
-                                f"""Based on this previous analysis:
-                                {response.content}
-                                
-                                What are your key recommendations based on the analysis, the best course of action?
-                                Provide specific recommendations from: {', '.join(analysis_configs[analysis_type]['agents'])}"""
+                                f"""
+"""
+"""Based on this previous analysis:
+ {response.content}
+
+What are your key recommendations based on the analysis, the best course of action?
+ Provide specific recommendations from: {', '.join(analysis_configs[analysis_type]['agents'])}"""
+"""
                             )
                             if recommendations_response.content:
                                 st.markdown(recommendations_response.content)
@@ -394,7 +390,7 @@ def main():
                     except Exception as e:
                         st.error(f"Error during analysis: {str(e)}")
     else:
-        st.info("Please upload a legal document to begin analysis")
+        st.info("upload a legal document to begin analysis")
 
 if __name__ == "__main__":
     main() 
