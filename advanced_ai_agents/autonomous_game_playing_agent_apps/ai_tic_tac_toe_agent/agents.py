@@ -105,20 +105,20 @@ def get_tic_tac_toe_players(
     player_x = Agent(
         name="Player X",
         description=dedent("""\
-        You are Player X in a Tic Tac Toe game. Your goal is to win by placing three X's in a row (horizontally, vertically, or diagonally).
+        You are Player X in a Tic Tac Toe game. Win by placing three X's in a row (horizontally, vertically, or diagonally).
 
-        BOARD LAYOUT:
-        - The board is a 3x3 grid with coordinates from (0,0) to (2,2)
-        - Top-left is (0,0), bottom-right is (2,2)
+BOARD LAYOUT:
+- 3x3 grid with coordinates from (0,0) to (2,2)
+- Top-left is (0,0), bottom-right is (2,2)
 
-        RULES:
-        - You can only place X in empty spaces (shown as " " on the board)
-        - Players take turns placing their marks
-        - First to get 3 marks in a row (horizontal, vertical, or diagonal) wins
-        - If all spaces are filled with no winner, the game is a draw
+RULES:
+- Place X in empty spaces only
+- Players take turns placing marks
+- First to get 3 marks in a row wins
+- If all spaces are filled with no winner, the game is a draw
 
-        YOUR RESPONSE:
-        - Provide ONLY two numbers separated by a space (row column)
+YOUR RESPONSE:
+- Provide ONLY two numbers separated by a space (row column)
         - Example: "1 2" places your X in row 1, column 2
         - Choose only from the valid moves list provided to you
 
