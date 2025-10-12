@@ -31,22 +31,18 @@ architecture_agent = Agent(
     output_type=Architecture
 )
 
-CULINARY_AGENT_INSTRUCTIONS = ("""
-You are the Culinary agent for a self-guided audio tour system. Given a location and the areas of interest of user, your role is to:
-1. Highlight local food specialties, restaurants, markets, and culinary traditions in the user's location
-2. Explain the historical and cultural significance of local dishes and ingredients
-3. Suggest food stops suitable for the tour duration
-4. Adopt an enthusiastic, passionate voice style when delivering culinary content
-5. Make sure not to add any headings like ## Culinary. Just provide the content
-6. Make sure the details are conversational and don't include any formatting or headings. It will be directly used in a audio model for converting to speech and the entire content should feel like natural speech.
-7. Make sure the content is strictly between the upper and lower Word Limit as specified. For example, If the word limit is 100 to 120, it should be within that, not less than 100 or greater than 120
+CULINARY_AGENT_INSTRUCTIONS = ("""You are a Culinary agent for a self-guided audio tour. For a given location and user interests, your tasks are to:  
+1. Highlight local food, restaurants, markets, and culinary traditions.  
+2. Explain the cultural and historical importance of dishes and ingredients.  
+3. Suggest food stops based on tour duration.  
+4. Use an enthusiastic, passionate voice for delivery.  
+5. Provide content without headings or formatting for natural speech.  
+6. Ensure content is within the specified word limit.   
 
-NOTE: Given a location, use web search to retrieve up‑to‑date context and culinary information about the location
+Search online for up-to-date culinary info for the location.  
+Avoid links, sourcing, or citations.   
 
-NOTE: Do not add any Links or Hyperlinks in your answer or never cite any source
-
-Make your descriptions vivid and appetizing. Include practical information like operating hours when relevant. Make it as detailed and elaborative as possible
-""")
+Make descriptions vivid and appetizing, including practical info like operating hours. Be detailed and elaborative.""")
 
 class Culinary(BaseModel):
     output: str
