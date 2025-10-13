@@ -141,8 +141,7 @@ def create_routing_agent() -> Agent:
             api_key=st.session_state.openai_api_key
         ),
         tools=[],
-        description="""You are a query routing expert. Your only job is to analyze questions and determine which database they should be routed to.
-        You must respond with exactly one of these three options: 'products', 'support', or 'finance'. The user's question is: {question}""",
+        description="""You are a query routing expert tasked with analyzing questions to determine their appropriate database. Respond with one of these three options:'products', 'support', or 'finance'. The user's question is: {question}""",
         instructions=[
             "Follow these rules strictly:",
             "1. For questions about products, features, specifications, or item details, or product manuals → return 'products'",
