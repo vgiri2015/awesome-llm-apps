@@ -238,9 +238,7 @@ def query_database(db: Qdrant, question: str) -> tuple[str, list]:
         if relevant_docs:
             # Use simpler chain creation with hub prompt
             retrieval_qa_prompt = ChatPromptTemplate.from_messages([
-                ("system", """You are a helpful AI assistant that answers questions based on provided context.
-                             Always be direct and concise in your responses.
-                             If the context doesn't contain enough information to fully answer the question, acknowledge this limitation.
+                ("system", """You are a helpful AI assistant that answers questions based on context. Be direct and concise. If the context doesn't contain enough information to fully answer the question, acknowledge this limitation.
                              Base your answers strictly on the provided context and avoid making assumptions."""),
                 ("human", "Here is the context:\n{context}"),
                 ("human", "Question: {input}"),
