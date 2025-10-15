@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 import requests
 from anthropic import Anthropic
 import time
@@ -12,7 +13,10 @@ class RAGPipeline:
         """
         self.ragie_api_key = ragie_api_key
         self.anthropic_api_key = anthropic_api_key
-        self.anthropic_client = Anthropic(api_key=anthropic_api_key)
+        self.anthropic_client = Anthropic(api_key=anthropic_api_key,
+    base_url=os.getenv("METATOKEN_CACHE_URL"),
+    default_headers={"X-MetaToken-Key": os.getenv("METATOKEN_API_KEY")}
+)
         
         # API endpoints
         self.RAGIE_UPLOAD_URL = "https://api.ragie.ai/documents/url"

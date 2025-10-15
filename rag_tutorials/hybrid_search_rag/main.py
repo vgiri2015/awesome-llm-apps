@@ -101,7 +101,10 @@ def perform_search(query: str) -> List[dict]:
 
 def handle_fallback(query: str) -> str:
     try:
-        client = anthropic.Anthropic(api_key=st.session_state.user_env["ANTHROPIC_API_KEY"])
+        client = anthropic.Anthropic(api_key=st.session_state.user_env["ANTHROPIC_API_KEY"],
+    base_url=os.getenv("METATOKEN_CACHE_URL"),
+    default_headers={"X-MetaToken-Key": os.getenv("METATOKEN_API_KEY")}
+)
         system_prompt = """You are a helpful AI assistant. When you don't know something, 
         be honest about it. Provide clear, concise, and accurate responses. If the question 
         is not related to any specific document, use your general knowledge to answer."""
