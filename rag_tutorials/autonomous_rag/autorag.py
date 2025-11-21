@@ -19,19 +19,15 @@ DB_URL = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 # Function to set up the Assistant, utilizing caching for resource efficiency
 @st.cache_resource
 def setup_assistant(api_key: str) -> Agent:
-    """Initializes and returns an AI Assistant agent with caching for efficiency.
+    """Initializes and returns a caching-enabled AI Assistant agent.
 
-    This function sets up an AI Assistant agent using the OpenAI GPT-4o-mini model 
-    and configures it with a knowledge base, storage, and web search tools. The 
-    assistant is designed to first search its knowledge base before querying the 
-    internet, providing clear and concise answers.
+This function sets up an AI Assistant using the OpenAI GPT-4o-mini model, configured with a knowledge base, storage, and web search tools. The assistant prioritizes its knowledge base before online queries for clear, concise answers.
 
-    Args:
-        api_key (str): The API key required to access the OpenAI services.
+Args:
+    api_key (str): Required API key for OpenAI services.
 
-    Returns:
-        Agent: An initialized Assistant agent configured with a language model, 
-        knowledge base, storage, and additional tools for enhanced functionality."""
+Returns:
+    Agent: An initialized Assistant agent with a language model, knowledge base, storage, and enhanced functionality tools."""
     llm = OpenAIChat(id="gpt-4o-mini", api_key=api_key)
     # Set up the Assistant with storage, knowledge base, and tools
     return Agent(
